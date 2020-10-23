@@ -42,7 +42,7 @@ try
 			'tarifa' => $tarifa
 		);
 		
-		return json_encode($return);
+		echo json_encode($return);
 	}
 	else
 	{
