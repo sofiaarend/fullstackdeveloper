@@ -19,6 +19,10 @@ try {
 
     $ok = ($now !== FALSE);
 
+    $sql_cidade = "select * from cidade";
+
+    $cidade = $db->query($sql_cidade)->fetchObject();
+
 } catch (PDOException $e) {
     $ok = false;
 }
@@ -52,6 +56,7 @@ try {
                         Não foi possível conectar ao banco de dados.
                     </div>
                 <?php } ?>
+                    <div style="text-align: center;"><b><?php echo "Rodando da cidade: {$cidade->nome}"; ?></b></div>
             </div>
         </div>
     </div> <!-- /container -->
