@@ -52,47 +52,49 @@ try {
     </div>
     <div style="width: 80%; margin: auto;">
         <div style="width: 50%;float: left;">
-            <table style="border: 1px solid;">
-                <tbody>
-                    <tr>
-                        <td>
-                            Cidade: 
-                            <select>
-                                <?php  
-                                    foreach ($cidades as $cidade) {
-                                        echo "<option value=\"{$cidade['id']}\">{$cidade['nome']}</option>";
-                                 }?>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Categoria: 
-                            <select>
-                                <?php  
-                                    foreach ($categorias as $categoria) {
-                                        echo "<option value=\"{$categoria['id']}\">{$categoria['nome']}</option>";
-                                 }?>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Endereço de Origem: <input type="text" name="endereco_origem">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Endereço de Destino: <input type="text" name="endereco_destino">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <button>Efetuar estivativa</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <form id="dados_viagem">
+                <table style="border: 1px solid;">
+                    <tbody>
+                        <tr>
+                            <td>
+                                Cidade: 
+                                <select name="ref_cidade">
+                                    <?php  
+                                        foreach ($cidades as $cidade) {
+                                            echo "<option value=\"{$cidade['id']}\">{$cidade['nome']}</option>";
+                                     }?>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Categoria: 
+                                <select name="ref_categoria">
+                                    <?php  
+                                        foreach ($categorias as $categoria) {
+                                            echo "<option value=\"{$categoria['id']}\">{$categoria['nome']}</option>";
+                                     }?>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Endereço de Origem: <input type="text" name="endereco_origem">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Endereço de Destino: <input type="text" name="endereco_destino">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button>Efetuar estivativa</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
         </div>
         <div style="width: 50%;float: right;">
             <table style="border: 1px solid;">
@@ -116,5 +118,6 @@ try {
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
         integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
         crossorigin="anonymous"></script>
+
 </body>
 </html>
