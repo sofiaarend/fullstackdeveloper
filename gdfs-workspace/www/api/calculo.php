@@ -39,7 +39,7 @@ try
 			'bandeirada' => $cidade_categoria['bandeira'],
 			'valorHora' => $cidade_categoria['valorHora'],
 			'valorKm' => $cidade_categoria['valorKm'],
-			'tarifa' => $tarifa
+			'tarifa' => number_format($tarifa,2,',','.')
 		);
 		
 		echo json_encode($return);
@@ -51,8 +51,7 @@ try
 }
 catch(Exception $e)
 {
-	var_dump($e->getMessage());
-	return $e->getMessage();
+	echo json_encode(['erro'=>$e->getMessage()]);
 }
 
 ?>
