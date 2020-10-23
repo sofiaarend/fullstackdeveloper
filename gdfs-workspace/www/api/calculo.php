@@ -23,30 +23,37 @@ try
 						   and ref_categoria = {$categoria}";
 		$cidade_categoria = $db->query($sql_cid_cat)->fetchAll(PDO::FETCH_ASSOC)[0];
 
-		$tarifa = $cidade_categoria['bandeira'] + $cidade_categoria['valorHora'] * $duracao + $cidade_categoria['valorKm'] * $distancia;
-		
-		$sql_tarifa = "insert into historico_viagem(ref_cidade,ref_categoria,endereco_origem,
-													endereco_destino,distancia,duracao,valor_tarifa)
-											values({$cidade},{$categoria},\"{$origem}\",\"{$destino}\",{$distancia},{$duracao},{$tarifa})";
+		if ($cidade_categoria) 
+		{
+			$tarifa = $cidade_categoria['bandeira'] + $cidade_categoria['valorHora'] * $duracao + $cidade_categoria['valorKm'] * $distancia;
+			
+			$sql_tarifa = "insert into historico_viagem(ref_cidade,ref_categoria,endereco_origem,
+														endereco_destino,distancia,duracao,valor_tarifa)
+												values({$cidade},{$categoria},\"{$origem}\",\"{$destino}\",{$distancia},{$duracao},{$tarifa})";
 
-		$statement = $db->prepare($sql_tarifa);
+			$statement = $db->prepare($sql_tarifa);
 
-		$statement->execute();
+			$statement->execute();
 
-		$return = array(
-			'distancia' => $distancia,
-			'duracao' => $duracao*60,
-			'bandeirada' => $cidade_categoria['bandeira'],
-			'valorHora' => $cidade_categoria['valorHora'],
-			'valorKm' => $cidade_categoria['valorKm'],
-			'tarifa' => number_format($tarifa,2,',','.')
-		);
-		
-		echo json_encode($return);
+			$return = array(
+				'distancia' => $distancia,
+				'duracao' => $duracao*60,
+				'bandeirada' => $cidade_categoria['bandeira'],
+				'valorHora' => $cidade_categoria['valorHora'],
+				'valorKm' => $cidade_categoria['valorKm'],
+				'tarifa' => number_format($tarifa,2,',','.')
+			);
+			
+			echo json_encode($return);
+		}
+		else
+		{
+			throw new Exception("A cidade escolhida nao possui a categoria escolhida");
+		}
 	}
 	else
 	{
-		throw new Exception("Todos os campos sao obrigatorios", 1);
+		throw new Exception("Todos os campos sao obrigatorios");
 	}
 }
 catch(Exception $e)
