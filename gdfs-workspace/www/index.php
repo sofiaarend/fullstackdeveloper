@@ -21,7 +21,11 @@ try {
 
     $sql_cidade = "select * from cidade";
 
-    $cidade = $db->query($sql_cidade)->fetchObject();
+    $cidades = $db->query($sql_cidade)->fetchAll(PDO::FETCH_ASSOC);
+
+    $sql_categoria = "select * from categoria";
+
+    $categorias = $db->query($sql_categoria)->fetchAll(PDO::FETCH_ASSOC);
 
 } catch (PDOException $e) {
     $ok = false;
@@ -45,19 +49,61 @@ try {
         <div class="row">
             <h2 class="mx-auto">Prova Desenvolvedor Full Stack</h2>
         </div>
-        <div class="row pt-5">
-            <div class="jumbotron mx-auto">
-                <?php if ($ok) { ?>
-                    <div class="alert alert-success mx-auto" role="alert">
-                        Ambiente instalado com sucesso!
-                    </div>
-                <?php } else { ?>
-                    <div class="alert alert-danger mx-auto" role="alert">
-                        Não foi possível conectar ao banco de dados.
-                    </div>
-                <?php } ?>
-                    <div style="text-align: center;"><b><?php echo "Rodando da cidade: {$cidade->nome}"; ?></b></div>
-            </div>
+    </div>
+    <div style="width: 80%; margin: auto;">
+        <div style="width: 50%;float: left;">
+            <table style="border: 1px solid;">
+                <tbody>
+                    <tr>
+                        <td>
+                            Cidade: 
+                            <select>
+                                <?php  
+                                    foreach ($cidades as $cidade) {
+                                        echo "<option value=\"{$cidade['id']}\">{$cidade['nome']}</option>";
+                                 }?>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Categoria: 
+                            <select>
+                                <?php  
+                                    foreach ($categorias as $categoria) {
+                                        echo "<option value=\"{$categoria['id']}\">{$categoria['nome']}</option>";
+                                 }?>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Endereço de Origem: <input type="text" name="endereco_origem">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Endereço de Destino: <input type="text" name="endereco_destino">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button>Efetuar estivativa</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="width: 50%;float: right;">
+            <table style="border: 1px solid;">
+                <tbody>
+                    <tr style="border: 1px solid;">
+                        <td style="border: 1px solid;">
+                            <p>Em Rio de Janeiro, carro executivo, de Rua da Assembléia, 10 para Rua Barata Ribeiro, 30, às 10:34: <b>R$ 23,15</b>.</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div> <!-- /container -->
 </main>
