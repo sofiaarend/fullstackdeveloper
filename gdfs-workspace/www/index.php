@@ -52,56 +52,55 @@ try {
     </div>
     <div style="width: 80%; margin: auto;">
         <div style="width: 50%;float: left;">
-            <form id="dados_viagem">
-                <table style="border: 1px solid;">
-                    <tbody>
-                        <tr>
-                            <td>
-                                Cidade: 
-                                <select name="ref_cidade">
-                                    <?php  
-                                        foreach ($cidades as $cidade) {
-                                            echo "<option value=\"{$cidade['id']}\">{$cidade['nome']}</option>";
-                                     }?>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Categoria: 
-                                <select name="ref_categoria">
-                                    <?php  
-                                        foreach ($categorias as $categoria) {
-                                            echo "<option value=\"{$categoria['id']}\">{$categoria['nome']}</option>";
-                                     }?>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Endereço de Origem: <input type="text" name="endereco_origem">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Endereço de Destino: <input type="text" name="endereco_destino">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <button>Efetuar estivativa</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </form>
+            <table style="border: 1px solid;">
+                <tbody>
+                    <tr>
+                        <td>
+                            Cidade: 
+                            <select id="ref_cidade">
+                                <?php  
+                                    foreach ($cidades as $cidade) {
+                                        echo "<option value=\"{$cidade['id']}\">{$cidade['nome']}</option>";
+                                 }?>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Categoria: 
+                            <select id="ref_categoria">
+                                <?php  
+                                    foreach ($categorias as $categoria) {
+                                        echo "<option value=\"{$categoria['id']}\">{$categoria['nome']}</option>";
+                                 }?>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Endereço de Origem: <input type="text" id="endereco_origem">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Endereço de Destino: <input type="text" id="endereco_destino">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button onclick="calculaTarifa()">Efetuar estivativa</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
         </div>
         <div style="width: 50%;float: right;">
             <table style="border: 1px solid;">
-                <tbody>
+                <tbody id="results_row">
                     <tr style="border: 1px solid;">
                         <td style="border: 1px solid;">
-                            <p>Em Rio de Janeiro, carro executivo, de Rua da Assembléia, 10 para Rua Barata Ribeiro, 30, às 10:34: <b>R$ 23,15</b>.</p>
+                            Em Rio de Janeiro, carro executivo, de Rua da Assembléia, 10 para Rua Barata Ribeiro, 30, às 10:34: <b>R$ 23,15</b>.
                         </td>
                     </tr>
                 </tbody>
@@ -119,5 +118,40 @@ try {
         integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
         crossorigin="anonymous"></script>
 
+<script type="text/javascript">
+
+    var calculaTarifa = function($result){
+        var ref_cidade = document.getElementById('ref_cidade').value;
+        var ref_categoria = document.getElementById('ref_categoria').value;
+        var endereco_origem = document.getElementById('endereco_origem').value;
+        var endereco_destino = document.getElementById('endereco_destino').value;
+
+        var d = new Date();
+        var time = d.getTime();
+
+        $.post("api/calculo.php", 
+            {ref_cidade: ref_cidade,
+            ref_categoria: ref_categoria,
+            endereco_origem: endereco_origem,
+            endereco_destino: endereco_destino}, 
+
+            function(results){
+                if (results) 
+                {
+                    var dados = JSON.parse(results);
+
+                    var linha = '<tr style="border: 1px solid;">';
+                    linha += '<td>Em cidade, categoria, de '+endereco_origem +' para '+endereco_destino;
+                    linha += ', às '+time+': R$ '+dados["tarifa"]+'</td></tr>';
+
+                    $("#results_row").append(linha);
+                }
+            });
+     };
+
+    
+
+
+</script>
 </body>
 </html>
