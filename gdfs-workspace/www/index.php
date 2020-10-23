@@ -52,12 +52,13 @@ try {
     </div>
     <div style="width: 80%; margin: auto;">
         <div style="width: 50%;float: left;">
-            <table style="border: 1px solid;">
+            <table style="border: 1px solid;" class="alert alert-primary">
                 <tbody>
                     <tr>
                         <td>
                             Cidade: 
-                            <select id="ref_cidade">
+                            <select id="ref_cidade" onchange="getCategoria()">
+                                <option> </option>
                                 <?php  
                                     foreach ($cidades as $cidade) {
                                         echo "<option value=\"{$cidade['id']}\">{$cidade['nome']}</option>";
@@ -69,10 +70,7 @@ try {
                         <td>
                             Categoria: 
                             <select id="ref_categoria">
-                                <?php  
-                                    foreach ($categorias as $categoria) {
-                                        echo "<option value=\"{$categoria['id']}\">{$categoria['nome']}</option>";
-                                 }?>
+                                
                             </select>
                         </td>
                     </tr>
@@ -165,8 +163,32 @@ try {
             });
      };
 
-    
+    var getCategoria = function($result){
+        $("#ref_categoria").find('option').remove().end();
 
+        var ref_cidade = document.getElementById('ref_cidade').value;
+
+        if (ref_cidade) 
+        {
+            $.get( "api/categorias.php", 
+                    {ref_cidade: ref_cidade},
+                    function( results ) {  
+                        if (results) 
+                        {
+                            var dados = JSON.parse(results);
+
+                            dados.forEach(montaOption)
+                        }
+                });
+        }
+    }
+
+    function montaOption(item)
+    {
+        var opcao = '<option value="'+item.id+'">'+item.nome+'</option>';
+
+        $("#ref_categoria").append(opcao);   
+    }
 
 </script>
 </body>
