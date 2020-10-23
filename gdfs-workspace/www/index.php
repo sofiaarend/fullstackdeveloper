@@ -119,15 +119,24 @@ try {
         crossorigin="anonymous"></script>
 
 <script type="text/javascript">
-
+    
     var calculaTarifa = function($result){
         var ref_cidade = document.getElementById('ref_cidade').value;
         var ref_categoria = document.getElementById('ref_categoria').value;
         var endereco_origem = document.getElementById('endereco_origem').value;
         var endereco_destino = document.getElementById('endereco_destino').value;
 
+        var select = document.getElementById('ref_cidade');
+        var option = select.children[select.selectedIndex];
+        var cidade = option.textContent;
+
+        var select = document.getElementById('ref_categoria');
+        var option = select.children[select.selectedIndex];
+        var categoria = option.textContent;
+        
         var d = new Date();
-        var time = d.getTime();
+        var minutes = d.getMinutes();
+        var hours = d.getHours();
 
         $.post("api/calculo.php", 
             {ref_cidade: ref_cidade,
@@ -140,11 +149,18 @@ try {
                 {
                     var dados = JSON.parse(results);
 
-                    var linha = '<tr style="border: 1px solid;">';
-                    linha += '<td>Em cidade, categoria, de '+endereco_origem +' para '+endereco_destino;
-                    linha += ', às '+time+': R$ '+dados["tarifa"]+'</td></tr>';
+                    if (!dados["erro"]) 
+                    {
+                        var linha = '<tr style="border: 1px solid;">';
+                        linha += '<td>Em '+cidade+', '+categoria+', de '+endereco_origem +' para '+endereco_destino;
+                        linha += ', às '+hours+':'+minutes+':<b> R$ '+dados["tarifa"]+'</b></td></tr>';
 
-                    $("#results_row").append(linha);
+                        $("#results_row").append(linha);
+                    }
+                    else
+                    {
+                        alert(dados['erro']);
+                    }
                 }
             });
      };
